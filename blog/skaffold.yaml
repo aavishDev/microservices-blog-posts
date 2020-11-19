@@ -1,0 +1,60 @@
+apiVersion: skaffold/v2beta9
+kind: Config
+metadata:
+  name: blog
+build:
+  local:
+    push: false
+  artifacts:
+  - image: aavish30/client
+    context: client
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - src: 'src/**/*.js'
+          dest: .
+  - image: aavish30/comments
+    context: comments
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - src: '*.js'
+          dest: .
+  - image: aavish30/event-bus
+    context: event-bus
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - src: '*.js'
+          dest: .
+  - image: aavish30/moderation
+    context: moderation
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - src: '*.js'
+          dest: .
+  - image: aavish30/posts
+    context: posts
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - src: '*.js'
+          dest: .
+  - image: aavish30/query
+    context: query
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - src: '*.js'
+          dest: .
+deploy:
+  kubectl:
+    manifests:
+    - ./infra/k8s/*

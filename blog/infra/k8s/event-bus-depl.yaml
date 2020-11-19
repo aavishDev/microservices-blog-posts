@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-bus-depl
+  labels:
+    app: event-bus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-bus
+  template:
+    metadata:
+      labels:
+        app: event-bus
+    spec:
+      containers:
+        - name: event-bus
+          image: aavish30/event-bus
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-bus-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: event-bus
+  ports:
+    - name: event-bus-srv
+      protocol: TCP
+      port: 5000
+      targetPort: 5000

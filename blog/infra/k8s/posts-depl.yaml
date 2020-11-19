@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: posts-depl
+  labels:
+    apps: posts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      apps: posts
+  template:
+    metadata:
+      labels:
+        apps: posts
+    spec:
+      containers:
+        - name: posts
+          image: aavish30/posts
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-cluster-ip
+spec:
+  selector:
+    apps: posts
+  ports:
+    - name: posts-cluster-ip
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
